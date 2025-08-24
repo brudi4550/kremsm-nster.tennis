@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, Suspense } from "react";
+import React, { useEffect, useRef, useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls as ThreeOrbitControls } from "three-stdlib";
 import * as THREE from "three";
 
-function TennisBallModel(props: any) {
+function TennisBallModel(props: React.ComponentProps<"group">) {
   const { scene } = useGLTF("./tennis_ball/scene.gltf");
   const ref = useRef<THREE.Group>(null);
 
@@ -34,7 +35,7 @@ export default function TennisBall({
   setActiveSection: (idx: number) => void;
   sectionTitles: string[];
 }) {
-  const controlsRef = useRef<any>(null);
+  const controlsRef = useRef<ThreeOrbitControls>(null);
   const lastAngleRef = useRef<number | null>(null);
   const accumulatedRef = useRef<number>(0);
   const [snap, setSnap] = useState(false);
@@ -110,20 +111,6 @@ export default function TennisBall({
 
   return (
     <div>
-      {/* Gradient fade above the band */}
-      <div
-        style={{
-          position: "fixed",
-          left: 0,
-          bottom: "calc(20vh + 40px)", // band height + ball height
-          width: "100vw",
-          height: "60px",
-          pointerEvents: "none",
-          zIndex: 21,
-          background: "linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 100%)",
-        }}
-      />
-
       {/* Band of sections above the ball */}
       <div
         style={{
@@ -134,7 +121,7 @@ export default function TennisBall({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          zIndex: 22,
+          zIndex: 20,
           pointerEvents: "none",
           height: "40px",
           overflow: "hidden",
@@ -163,7 +150,7 @@ export default function TennisBall({
                 transition: "all 0.2s",
                 width: `${sectionWidth}px`,
                 textAlign: "center",
-                pointerEvents: "auto",
+                pointerEvents: "auto", // allow clicking
                 userSelect: "none",
                 cursor: "pointer",
               }}
