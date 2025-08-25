@@ -2,24 +2,20 @@
 
 import React, { useEffect, useRef, useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF, useProgress } from "@react-three/drei";
 import { OrbitControls as ThreeOrbitControls } from "three-stdlib";
 import * as THREE from "three";
 
-function TennisBallModel(props: React.ComponentProps<"group">) {
-  const { scene } = useGLTF("./tennis_ball/scene.gltf");
+// TennisBallModel now only takes url as prop
+function TennisBallModel({ url, ...props }: { url: string } & React.ComponentProps<"group">) {
+  const { scene } = useGLTF(url);
   const ref = useRef<THREE.Group>(null);
 
   useEffect(() => {
     if (!ref.current) return;
-
-    // Compute bounding box of the model
     const box = new THREE.Box3().setFromObject(scene);
     const center = box.getCenter(new THREE.Vector3());
-
-    // Shift the model so its center is at origin
     scene.position.sub(center);
-
     ref.current.add(scene);
   }, [scene]);
 
@@ -38,6 +34,7 @@ export default function TennisBall({
   const controlsRef = useRef<ThreeOrbitControls>(null);
   const lastAngleRef = useRef<number | null>(null);
   const accumulatedRef = useRef<number>(0);
+  const { active: loading } = useProgress();
   const [snap, setSnap] = useState(false);
 
   // Only switch section when user spins the ball a full 360° (2π radians)
@@ -190,7 +187,7 @@ export default function TennisBall({
             onChange={handleControlsChange}
           />
           <Suspense fallback={null}>
-            <TennisBallModel />
+            <TennisBallModel url={"./tennis_ball/ball.glb"} />
           </Suspense>
         </Canvas>
       </div>

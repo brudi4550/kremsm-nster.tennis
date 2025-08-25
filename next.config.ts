@@ -1,5 +1,6 @@
-const isProd = process.env.NODE_ENV === 'production';
-
-module.exports = {
-  output: 'export', // enables `next export`
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
 };
+
+module.exports = nextConfig;
