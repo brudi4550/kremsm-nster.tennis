@@ -1,15 +1,10 @@
 self.__BUILD_MANIFEST = {
   "/_error": [
-    "./static/chunks/cf314cca94d6cfc8.js"
+    "./static/chunks/9fd3872cb5d7b4f9.js"
   ],
   "__rewrites": {
     "afterFiles": [],
-    "beforeFiles": [
-      {
-        "source": "/kremsmuenster-tennis//_next/:path+",
-        "destination": "/kremsmuenster-tennis/_next/:path+"
-      }
-    ],
+    "beforeFiles": [],
     "fallback": []
   },
   "sortedPages": [
