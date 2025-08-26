@@ -20,11 +20,11 @@ export default function LogoSpinnerLoader({
   useEffect(() => {
     let frame: number;
     let start: number | null = null;
-    let duration = 3000; // ms for 3 turns
-    let haltDuration = 1200; // ms to slow down
-    let totalDuration = duration + haltDuration;
-    let initialSpeed = (3 * 360) / duration; // deg/ms for 3 turns in duration
-    let slowSpeed = 30 / haltDuration; // deg/ms for slow end
+    const duration = 3000; // ms for 3 turns
+    const haltDuration = 1200; // ms to slow down
+    const totalDuration = duration + haltDuration;
+    const initialSpeed = (3 * 360) / duration; // deg/ms for 3 turns in duration
+    const slowSpeed = 30 / haltDuration; // deg/ms for slow end
 
     function animate(ts: number) {
       if (start === null) start = ts;

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { GeistSans } from "geist/font/sans";
 import Title from "./title";
 
