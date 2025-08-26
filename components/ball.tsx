@@ -2,11 +2,11 @@
 
 import React, { useEffect, useRef, useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, useProgress } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import { OrbitControls as ThreeOrbitControls } from "three-stdlib";
 import * as THREE from "three";
+useGLTF.preload("/tennis_ball/ball.glb");
 
-// TennisBallModel now only takes url as prop
 function TennisBallModel({ url, ...props }: { url: string } & React.ComponentProps<"group">) {
   const { scene } = useGLTF(url);
   const ref = useRef<THREE.Group>(null);
@@ -25,19 +25,19 @@ function TennisBallModel({ url, ...props }: { url: string } & React.ComponentPro
 export default function TennisBall({
   activeSection,
   setActiveSection,
-  sectionTitles
+  sectionTitles,
+  isDark = false,
 }: {
   activeSection: number;
   setActiveSection: (idx: number) => void;
   sectionTitles: string[];
+  isDark?: boolean;
 }) {
   const controlsRef = useRef<ThreeOrbitControls>(null);
   const lastAngleRef = useRef<number | null>(null);
   const accumulatedRef = useRef<number>(0);
-  const { active: loading } = useProgress();
   const [snap, setSnap] = useState(false);
 
-  // Only switch section when user spins the ball a full 360° (2π radians)
   const handleControlsChange = () => {
     if (!controlsRef.current) return;
     const angle = controlsRef.current.getAzimuthalAngle(); // -PI to PI
@@ -56,13 +56,13 @@ export default function TennisBall({
     lastAngleRef.current = angle;
 
     // If user spun right (positive) a full turn
-    if (accumulatedRef.current >= Math.PI) {
+    if (accumulatedRef.current >= Math.PI / 2) {
       setActiveSection((activeSection + 1) % sectionTitles.length);
       accumulatedRef.current = 0;
       setSnap(true);
     }
     // If user spun left (negative) a full turn
-    if (accumulatedRef.current <= -Math.PI) {
+    if (accumulatedRef.current <= -Math.PI / 2) {
       setActiveSection((activeSection - 1 + sectionTitles.length) % sectionTitles.length);
       accumulatedRef.current = 0;
       setSnap(true);
@@ -87,24 +87,30 @@ export default function TennisBall({
   }, [snap]);
 
 
-  const sectionWidth = 175;
+  const sectionWidth = 170;
   const containerWidth = sectionWidth * sectionTitles.length;
 
   const perSectionMiddleOfBand = sectionWidth / 2;
   const bandOffset = `calc(${(containerWidth / 2 - perSectionMiddleOfBand) - activeSection * sectionWidth}px)`;
 
-  // Make section clickable for desktop users
   const handleSectionClick = (idx: number) => {
     setActiveSection(idx);
     setSnap(true);
     if (controlsRef.current) {
       controlsRef.current.setAzimuthalAngle(
-        ((idx + 0.15) * (2 * Math.PI)) / sectionTitles.length
+        (idx * (Math.PI / 2)) / sectionTitles.length
       );
     }
     accumulatedRef.current = 0;
     lastAngleRef.current = null;
   };
+
+  // Adapt text color for dark/light mode
+  const activeColor = isDark ? "#fff" : "#222";
+  const inactiveColor = isDark ? "#888" : "#aaa";
+  const textShadow = isDark
+    ? "0 2px 8px rgba(0,0,0,0.32)"
+    : "0 2px 8px rgba(0,0,0,0.12)";
 
   return (
     <div>
@@ -113,7 +119,7 @@ export default function TennisBall({
         style={{
           position: "fixed",
           left: 0,
-          bottom: "20vh",
+          bottom: "18vh",
           width: "100vw",
           display: "flex",
           justifyContent: "center",
@@ -140,10 +146,9 @@ export default function TennisBall({
               style={{
                 fontSize: "2rem",
                 fontWeight: idx === activeSection ? "bold" : "normal",
-                color: idx === activeSection ? "#222" : "#aaa",
+                color: idx === activeSection ? activeColor : inactiveColor,
                 opacity: idx === activeSection ? 1 : 0.6,
-                textShadow:
-                  idx === activeSection ? "0 2px 8px rgba(0,0,0,0.12)" : "none",
+                textShadow: idx === activeSection ? textShadow : "none",
                 transition: "all 0.2s",
                 width: `${sectionWidth}px`,
                 textAlign: "center",
