@@ -1,8 +1,11 @@
+"use client";
+
+import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 
 export default function LogoSpinnerLoader({
   logoUrl,
-  size = 200, // px
+  size = 200,
   onFadeOut,
   className = "w-full h-screen",
 }: {
@@ -16,24 +19,23 @@ export default function LogoSpinnerLoader({
   const [spinning, setSpinning] = useState(true);
   const [rotation, setRotation] = useState(0);
 
-  // Spin for 3 turns, then slow down and fade out
+  // Spin animation (client only)
   useEffect(() => {
     let frame: number;
     let start: number | null = null;
-    const duration = 3000; // ms for 3 turns
-    const haltDuration = 1200; // ms to slow down
+    const duration = 3000;
+    const haltDuration = 1200;
     const totalDuration = duration + haltDuration;
-    const initialSpeed = (3 * 360) / duration; // deg/ms for 3 turns in duration
-    const slowSpeed = 30 / haltDuration; // deg/ms for slow end
+    const initialSpeed = (3 * 360) / duration;
+    const slowSpeed = 30 / haltDuration;
 
     function animate(ts: number) {
       if (start === null) start = ts;
       const elapsed = ts - start;
 
       let deg = 0;
-      if (elapsed < duration) {
-        deg = elapsed * initialSpeed;
-      } else if (elapsed < totalDuration) {
+      if (elapsed < duration) deg = elapsed * initialSpeed;
+      else if (elapsed < totalDuration) {
         const t = (elapsed - duration) / haltDuration;
         const speed = initialSpeed * (1 - t) + slowSpeed * t;
         deg = duration * initialSpeed + (elapsed - duration) * speed;
@@ -43,28 +45,25 @@ export default function LogoSpinnerLoader({
         setFade(true);
         setTimeout(() => {
           setHide(true);
-          if (onFadeOut) onFadeOut();
+          onFadeOut?.();
         }, 700);
         return;
       }
       setRotation(deg);
       frame = requestAnimationFrame(animate);
     }
+
     frame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frame);
-    // eslint-disable-next-line
   }, []);
-
-  if (hide) return null;
 
   return (
     <div
       className={className}
       style={{
-        transition: "opacity 0.7s",
+        transition: "opacity 0.7s, background 0.3s",
         opacity: fade ? 0 : 1,
         pointerEvents: "none",
-        background: "#fff",
         position: "fixed",
         inset: 0,
         zIndex: 100,
@@ -77,8 +76,8 @@ export default function LogoSpinnerLoader({
         src={logoUrl}
         alt="Logo"
         style={{
-          width: size,
-          height: size,
+          width: `${size}px`,
+          height: `${size}px`,
           objectFit: "contain",
           display: "block",
           transform: `rotateY(${rotation}deg)`,
@@ -86,7 +85,6 @@ export default function LogoSpinnerLoader({
             ? "none"
             : "transform 0.7s cubic-bezier(.68,-0.55,.27,1.55)",
           willChange: "transform",
-          filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.10))",
         }}
       />
     </div>

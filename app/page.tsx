@@ -1,7 +1,6 @@
 "use client";
 
 import { ModeToggle } from "@/components/mode-toggle";
-import { useProgress } from "@react-three/drei";
 import TennisBallNav from "@/components/ball";
 import { useState, useEffect } from "react";
 import Seit1977 from "@/components/seit1977";
@@ -15,53 +14,64 @@ import WFragen from "@/components/w-fragen";
 import PlatzUndDu from "@/components/platz-und-du";
 
 export default function Home() {
-  const { loaded } = useProgress();
+  const [mounted, setMounted] = useState(false);
   const [showSpinner, setShowSpinner] = useState(true);
-  const [activeSection, setActiveSection] = useState(2);
+  const [activeSection, setActiveSection] = useState(3);
   const [showBallNav, setShowBallNav] = useState(true);
+
   const sectionTitles = [
-    "clubhaus.", "aktuelles.", "seit 1977.",
-    "socials.", "nextGen.", "du+platz.", "w fragen."
+    "clubhaus.", "aktuelles.", "socials.",
+    "seit 1977.", "nextGen.", "du+platz.", "w fragen."
   ];
 
-  // Theme logic
+  useEffect(() => setMounted(true), []);
+
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const ballBg = isDark ? "#18181b" : "#fff";
 
-  // Spinner logic
   useEffect(() => {
-    const timer = setTimeout(() => setShowSpinner(false), 4000);
+    const timer = setTimeout(() => setShowSpinner(false), 4500);
     return () => clearTimeout(timer);
-  }, [loaded]);
+  }, []);
 
-  // Hide TennisBallNav on scroll down, show on scroll up
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [activeSection]);
+
+  // Show/hide TennisBallNav on scroll
   useEffect(() => {
     let lastScrollY = window.scrollY;
     let ticking = false;
 
-    function onScroll() {
+    const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          if (window.scrollY > lastScrollY + 10) {
-            setShowBallNav(false);
-          } else if (window.scrollY < lastScrollY - 10) {
-            setShowBallNav(true);
-          }
+          setShowBallNav(window.scrollY < lastScrollY - 10 || window.scrollY < 10);
           lastScrollY = window.scrollY;
           ticking = false;
         });
         ticking = true;
       }
-    }
+    };
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (showSpinner || !loaded) {
+  if (!mounted) return null;
+
+  if (showSpinner) {
     return (
-      <>
+      <div
+        style={{
+          position: "relative",
+          minHeight: "100vh",
+          background: ballBg,
+          transition: "background 0.3s",
+        }}
+        className={isDark ? "dark" : ""}
+      >
         <LogoSpinnerLoader logoUrl="/tus_logo.png" />
         <div style={{ visibility: "hidden", height: 0 }}>
           <TennisBallNav
@@ -70,7 +80,7 @@ export default function Home() {
             sectionTitles={sectionTitles}
           />
         </div>
-      </>
+      </div>
     );
   }
 
@@ -87,25 +97,18 @@ export default function Home() {
       <div className="fixed top-4 right-4 z-50">
         <ModeToggle />
       </div>
-      {activeSection == 0 && <Clubhaus />}
-      {activeSection == 1 && <Planmaesig />}
-      {activeSection == 2 && <Seit1977 />}
-      {activeSection == 3 && <Socials />}
-      {activeSection == 4 && <NextGen />}
-      {activeSection == 5 && <PlatzUndDu />}
-      {activeSection == 6 && <WFragen />}
 
-      <div
-        style={{
-          paddingBottom: "calc(20vh + 100px)",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        {/* Your scrollable content here */}
-      </div>
+      {activeSection === 0 && <Clubhaus />}
+      {activeSection === 1 && <Planmaesig />}
+      {activeSection === 2 && <Socials />}
+      {activeSection === 3 && <Seit1977 />}
+      {activeSection === 4 && <NextGen />}
+      {activeSection === 5 && <PlatzUndDu />}
+      {activeSection === 6 && <WFragen />}
 
-      {/* Only show the background when the ball nav is visible */}
+      <div style={{ paddingBottom: "calc(20vh + 100px)", position: "relative", zIndex: 1 }} />
+
+      {/* Glass blur effect with increasing blur */}
       {showBallNav && (
         <div
           style={{
@@ -113,34 +116,33 @@ export default function Home() {
             left: 0,
             bottom: 0,
             width: "100vw",
-            height: "calc(20vh + 40px)",
-            background: ballBg,
-            zIndex: 10,
+            height: "35vh",
+            zIndex: 19,
             pointerEvents: "none",
-            transition: "background 0.3s",
+            overflow: "hidden",
           }}
-        />
+        >
+          {/* Bottom stronger blur */}
+          <div
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              mask: "linear-gradient(to top, black, black 70%, transparent 100%)",
+              background: isDark
+                ? "rgba(24,24,27,0.65)"
+                : "rgba(255,255,255,0.65)",
+              boxShadow: isDark
+                ? "0 -2px 32px 0 rgba(0,0,0,0.12)"
+                : "0 -2px 32px 0 rgba(0,0,0,0.04)",
+            }}
+          />
+        </div>
       )}
 
-      {/* Gradient at the top of the ball nav */}
-      {showBallNav && (
-        <div
-          style={{
-            position: "fixed",
-            left: 0,
-            bottom: "calc(20vh + 40px)", // 24px tall gradient
-            width: "100vw",
-            height: "40px",
-            zIndex: 21,
-            pointerEvents: "none",
-            background: isDark
-              ? "linear-gradient(to top, #18181b 0%, rgba(24,24,27,0) 100%)"
-              : "linear-gradient(to top, #fff 0%, rgba(255,255,255,0) 100%)",
-            transition: "background 0.3s",
-          }}
-        />
-      )}
-
+      {/* Ball nav */}
       <div
         style={{
           position: "fixed",
@@ -150,9 +152,7 @@ export default function Home() {
           zIndex: 20,
           transition: "opacity 0.4s, transform 0.4s",
           opacity: showBallNav ? 1 : 0,
-          transform: showBallNav
-            ? "translateY(0)"
-            : "translateY(40px)",
+          transform: showBallNav ? "translateY(0)" : "translateY(40px)",
           pointerEvents: showBallNav ? "auto" : "none",
         }}
       >
@@ -160,7 +160,6 @@ export default function Home() {
           activeSection={activeSection}
           setActiveSection={setActiveSection}
           sectionTitles={sectionTitles}
-          isDark={isDark}
         />
       </div>
     </div>

@@ -23,7 +23,24 @@ const Title: React.FC<TitleProps> = ({ children, className = '' }) => {
                 overflowWrap: "break-word",
             }}
         >
-            {children}
+            <span
+                style={{
+                    display: "block",
+                    fontSize: "inherit",
+                    letterSpacing: "inherit",
+                }}
+                className="title-responsive"
+            >
+                {children}
+            </span>
+            <style>{`
+                @media (max-width: 600px) {
+                    .title-responsive {
+                        font-size: 3rem !important;
+                        letter-spacing: -0.08em !important;
+                    }
+                }
+            `}</style>
         </h1>
     );
 };

@@ -23,16 +23,16 @@ export default function Seit1977() {
                     28457 Matches.
                 </p>
                 <p className="mt-3">
-                    14289 Siege.
+                    16341 Siege.
                 </p>
                 <p className="mt-3">
-                    12168 Niederlagen (umstritten).
+                    12116 Niederlagen (umstritten).
                 </p>
                 <p className="mt-3">
                     Emotion, Leidenschaft, Gemeinschaft.
                 </p>
                 <p className="mt-3">
-                    Alles was Tennis mit sich bringt. Und das kompakt auf 6 Plätze + Clubhaus in 4550 Kremsmünster.
+                    Alles was Tennis mit sich bringt. Und das kompakt auf 6 Plätzen + Clubhaus in 4550 Kremsmünster.
                 </p>
             </div>
         </div>

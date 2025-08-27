@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { OrbitControls as ThreeOrbitControls } from "three-stdlib";
 import * as THREE from "three";
+import { useTheme } from "next-themes";
 useGLTF.preload("/tennis_ball/ball.glb");
 
 function TennisBallModel({ url, ...props }: { url: string } & React.ComponentProps<"group">) {
@@ -26,17 +27,16 @@ export default function TennisBall({
   activeSection,
   setActiveSection,
   sectionTitles,
-  isDark = false,
 }: {
   activeSection: number;
   setActiveSection: (idx: number) => void;
   sectionTitles: string[];
-  isDark?: boolean;
 }) {
   const controlsRef = useRef<ThreeOrbitControls>(null);
   const lastAngleRef = useRef<number | null>(null);
   const accumulatedRef = useRef<number>(0);
   const [snap, setSnap] = useState(false);
+  const { resolvedTheme } = useTheme();
 
   const handleControlsChange = () => {
     if (!controlsRef.current) return;
@@ -86,7 +86,6 @@ export default function TennisBall({
     }
   }, [snap]);
 
-
   const sectionWidth = 170;
   const containerWidth = sectionWidth * sectionTitles.length;
 
@@ -106,9 +105,9 @@ export default function TennisBall({
   };
 
   // Adapt text color for dark/light mode
-  const activeColor = isDark ? "#fff" : "#222";
-  const inactiveColor = isDark ? "#888" : "#aaa";
-  const textShadow = isDark
+  const activeColor =  resolvedTheme === "dark" ? "#fff" : "#222";
+  const inactiveColor = resolvedTheme === "dark" ? "#888" : "#aaa";
+  const textShadow = resolvedTheme === "dark"
     ? "0 2px 8px rgba(0,0,0,0.32)"
     : "0 2px 8px rgba(0,0,0,0.12)";
 
@@ -175,24 +174,24 @@ export default function TennisBall({
         }}
       >
         <Canvas camera={{ position: [0, 0, 7] }}>
-          <ambientLight intensity={1.5} />
-          <directionalLight position={[10, 5, 5]} intensity={1.2} />
+          <ambientLight intensity={2} />
+          <directionalLight position={[10, 5, 5]} intensity={1.5} />
           <OrbitControls
             ref={controlsRef}
             enableZoom={false}
             enablePan={false}
             target={[0, 0, 0]}
             enableDamping
-            dampingFactor={0.05}
+            dampingFactor={0.1}
             //autoRotate
             autoRotateSpeed={0.5}
             minPolarAngle={Math.PI / 2}
             maxPolarAngle={Math.PI / 2}
-            rotateSpeed={0.5}
+            rotateSpeed={1}
             onChange={handleControlsChange}
           />
           <Suspense fallback={null}>
-            <TennisBallModel url={"./tennis_ball/ball.glb"} />
+            <TennisBallModel url="./tennis_ball/ball.glb" />
           </Suspense>
         </Canvas>
       </div>

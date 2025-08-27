@@ -12,46 +12,85 @@ export default function NextGen() {
             </div>
             <div className="text-3xl leading-tight">
                 <p>
-                    Zweite Heimat. Wohnzimmer. Inbegriff der{" "}
-                    <a
-                        href="https://wikipedia.org/en/Third_Place"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline text-blue-600 hover:text-blue-800"
-                    >
-                        Third Place Theorie
-                    </a>
-                    .
+                    Kinder- und Jugendförderung liegt uns schon seit jeher am Herzen.
                 </p>
                 <p className="mt-3">
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.
+                    Wir bieten ein umfassendes Training für alle Altersgruppen und Spielstärken an, von den ganz Kleinen bis zu den nicht mehr ganz so Kleinen.
                 </p>
                 <p className="mt-3">
-                    Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    <strong>Sommertraining 🌞</strong>
                 </p>
                 <p className="mt-3">
-                    Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa.
+                    Anfang Mai bis Ende Juni, 13 bis 20 Uhr, Mittwoch und Freitag.
                 </p>
                 <p className="mt-3">
-                    Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                    Einteilung nach Spielstärke und Gruppengröße.
                 </p>
                 <p className="mt-3">
-                    Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh.
+                    Die Anmeldung ist offen bis Ende März.
                 </p>
                 <p className="mt-3">
-                    Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                    <strong>Tenniscamp ⛺️</strong>
                 </p>
                 <p className="mt-3">
-                    Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Cras mattis consectetur purus sit amet fermentum.
+                    4. Ferienwoche = Tennis pur.
                 </p>
                 <p className="mt-3">
-                    Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Maecenas sed diam eget risus varius blandit sit amet non magna.
+                    Montag - Donnerstag, 8 bis 14 Uhr inklusive Mittagessen.
                 </p>
                 <p className="mt-3">
-                    Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Sed posuere consectetur est at lobortis.
+                    Alle im Alter von 4 bis 18 Jahren sind willkommen.
                 </p>
                 <p className="mt-3">
-                    Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.
+                    Die Anmeldung ist möglich ab Mitte März bis Ende Mai.
+                </p>
+                <p className="mt-3">
+                    Die Plätze sind begrenzt, Teilnehmer von Sommer- und Wintertraining haben Vorrang.
+                </p>
+                <p className="mt-3">
+                    <strong>Wintertraining ⛄️</strong>
+                </p>
+                <p className="mt-3">
+                    20 Termine von Oktober bis März.
+                </p>
+                <p className="mt-3">
+                    Mittwoch von 13 bis 18 Uhr.
+                </p>
+                <p className="mt-3">
+                    Freitag von 13 bis 19 Uhr.
+                </p>
+                <p className="mt-3">
+                    Einteilung nach Spielstärke und Gruppengröße.
+                </p>
+                <p className="mt-3">
+                    Das Training findet in der Tennishalle Wahlmüller Halle 3 statt.
+                </p>
+                <p className="mt-3">
+                    Die Anmeldung ist offen bis Anfang September.
+                </p>
+                <p className="mt-3">
+                    <strong>Organisation und Anmeldung 👨🏼‍💻️</strong>
+                </p>
+                <p className="mt-3">
+                    Peter Schöngruber
+                </p>
+                <p className="mt-3">
+                    0677 616 29 005 | peter@schoengruber.net
+                </p>
+                <p className="mt-3">
+                    Daniel Kurzmann
+                </p>
+                <p className="mt-3">
+                    0677 62155926
+                </p>
+                <p className="mt-3">
+                    Wir finden für jedes Kind die passende Gruppe und passenden Termin.
+                </p>
+                <p className="mt-3">
+                    Neben dem Training bieten wir zusätzlich weitere Events und Aktivitäten an.
+                </p>
+                <p className="mt-3">
+                    Saisoneröffnung, Eltern- Kindertraining, Matchtraining, Ortsmeisterschaft Jugend, OÖ. Jugendmeisterschaft
                 </p>
             </div>
         </div>
