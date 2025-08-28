@@ -53,7 +53,7 @@ export default function Home() {
     let lastScrollY = window.scrollY;
 
     const onScroll = () => {
-      const currentScrollY = window.scrollY;
+      const currentScrollY = Math.max(0, window.scrollY);
 
       if (currentScrollY < lastScrollY) {
         setShowBallNav(true);
@@ -64,9 +64,10 @@ export default function Home() {
       lastScrollY = currentScrollY;
     };
 
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
 
 
   if (!mounted) return null;
@@ -162,7 +163,7 @@ export default function Home() {
           zIndex: 20,
           transition: "opacity 0.4s, transform 0.4s",
           opacity: showBallNav && !inAnimationPhase ? 1 : 0,
-          transform: showBallNav  && !inAnimationPhase ? "translateY(0)" : "translateY(40px)",
+          transform: showBallNav && !inAnimationPhase ? "translateY(0)" : "translateY(40px)",
           pointerEvents: showBallNav ? "auto" : "none",
         }}
       >
