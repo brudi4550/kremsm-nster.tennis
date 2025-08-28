@@ -1,30 +1,28 @@
 import Image from "next/image";
 import { GeistSans } from "geist/font/sans";
 import Title from "./title";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-type Seit1977Props = {
-    animate?: boolean;
-    imageSrcs?: string[];
-};
-
-export default function Seit1977({
-    animate = false,
-    imageSrcs = [
+export default function Seit1977({ animate = false }: { animate?: boolean }) {
+    const imageSrcs = [
         "/verein1.jpg",
         "/verein2.jpg",
         "/verein3.jpg",
         "/verein4.jpg"
-    ],
-}: Seit1977Props) {
+    ];
     const [imagesVisible, setImagesVisible] = useState(Array(imageSrcs.length).fill(false));
-    const imageRefs = imageSrcs.map(() => useRef<HTMLDivElement>(null));
+
+    // Create refs only once for each image
+    const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+    if (imageRefs.current.length !== imageSrcs.length) {
+        imageRefs.current = Array(imageSrcs.length).fill(null);
+    }
 
     useEffect(() => {
         function onScroll() {
-            imageRefs.forEach((ref, i) => {
-                if (ref.current && !imagesVisible[i]) {
-                    const rect = ref.current.getBoundingClientRect();
+            imageRefs.current.forEach((ref, i) => {
+                if (ref && !imagesVisible[i]) {
+                    const rect = ref.getBoundingClientRect();
                     if (rect.top < window.innerHeight - 100) {
                         setImagesVisible(prev => {
                             const next = [...prev];
@@ -38,7 +36,7 @@ export default function Seit1977({
         window.addEventListener("scroll", onScroll);
         onScroll();
         return () => window.removeEventListener("scroll", onScroll);
-    }, [imagesVisible, imageRefs]);
+    }, [imagesVisible]);
 
     return (
         <div
@@ -91,7 +89,7 @@ export default function Seit1977({
             {imageSrcs.map((src, i) => (
                 <div
                     key={src}
-                    ref={imageRefs[i]}
+                    ref={el => { imageRefs.current[i] = el; }}
                     style={{
                         transition: "opacity 0.7s, transform 0.7s",
                         opacity: imagesVisible[i] ? 1 : 0,

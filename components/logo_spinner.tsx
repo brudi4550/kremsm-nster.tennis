@@ -1,21 +1,18 @@
 "use client";
 
-import { useTheme } from "next-themes";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 export default function LogoSpinnerLoader({
   logoUrl,
   size = 200,
-  onFadeOut,
   className = "w-full h-screen",
 }: {
   logoUrl: string;
   size?: number;
-  onFadeOut?: () => void;
   className?: string;
 }) {
   const [fade, setFade] = useState(false);
-  const [hide, setHide] = useState(false);
   const [spinning, setSpinning] = useState(true);
   const [rotation, setRotation] = useState(0);
 
@@ -43,10 +40,6 @@ export default function LogoSpinnerLoader({
         deg = duration * initialSpeed + haltDuration * slowSpeed;
         setSpinning(false);
         setFade(true);
-        setTimeout(() => {
-          setHide(true);
-          onFadeOut?.();
-        }, 700);
         return;
       }
       setRotation(deg);
@@ -72,12 +65,12 @@ export default function LogoSpinnerLoader({
         justifyContent: "center",
       }}
     >
-      <img
+      <Image
+        width={size / 2}
+        height={size / 2}
         src={logoUrl}
         alt="Logo"
         style={{
-          width: `${size}px`,
-          height: `${size}px`,
           objectFit: "contain",
           display: "block",
           transform: `rotateY(${rotation}deg)`,

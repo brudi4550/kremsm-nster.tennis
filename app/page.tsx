@@ -2,7 +2,7 @@
 
 import { ModeToggle } from "@/components/mode-toggle";
 import TennisBallNav from "@/components/ball";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import Seit1977 from "@/components/seit1977";
 import LogoSpinnerLoader from "@/components/logo_spinner";
 import { useTheme } from "next-themes";
