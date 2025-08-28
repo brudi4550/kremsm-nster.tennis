@@ -11,18 +11,6 @@ export default function Planmaesig() {
                 <Title>Planmäßig.</Title>
             </div>
             <div className="text-3xl leading-tight">
-                <p>
-                    Zweite Heimat. Wohnzimmer. Inbegriff der{" "}
-                    <a
-                        href="https://wikipedia.org/en/Third_Place"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline text-blue-600 hover:text-blue-800"
-                    >
-                        Third Place Theorie
-                    </a>
-                    .
-                </p>
                 <p className="mt-3">
                     Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.
                 </p>

@@ -35,11 +35,12 @@ export default function TennisBall({
   const controlsRef = useRef<ThreeOrbitControls>(null);
   const lastAngleRef = useRef<number | null>(null);
   const accumulatedRef = useRef<number>(0);
+  const ignoreInputRef = useRef<boolean>(false);
   const [snap, setSnap] = useState(false);
   const { resolvedTheme } = useTheme();
 
   const handleControlsChange = () => {
-    if (!controlsRef.current) return;
+    if (!controlsRef.current || ignoreInputRef.current) return;
     const angle = controlsRef.current.getAzimuthalAngle(); // -PI to PI
 
     if (lastAngleRef.current === null) {
@@ -69,15 +70,6 @@ export default function TennisBall({
     }
   };
 
-  // Reset tracking when autorotate is active so it doesn't affect section switching
-  useEffect(() => {
-    if (!controlsRef.current) return;
-    controlsRef.current.addEventListener("start", () => {
-      lastAngleRef.current = null;
-      accumulatedRef.current = 0;
-    });
-  }, []);
-
   // Remove snap effect after animation
   useEffect(() => {
     if (snap) {
@@ -93,20 +85,24 @@ export default function TennisBall({
   const bandOffset = `calc(${(containerWidth / 2 - perSectionMiddleOfBand) - activeSection * sectionWidth}px)`;
 
   const handleSectionClick = (idx: number) => {
+    ignoreInputRef.current = true;
     setActiveSection(idx);
     setSnap(true);
     if (controlsRef.current) {
       controlsRef.current.setAzimuthalAngle(
-        (idx * (Math.PI / 2)) / sectionTitles.length
+        (idx * (Math.PI * 2)) / sectionTitles.length
       );
     }
     accumulatedRef.current = 0;
     lastAngleRef.current = null;
+    setTimeout(() => {
+      ignoreInputRef.current = false;
+    }, 300);
   };
 
   // Adapt text color for dark/light mode
-  const activeColor =  resolvedTheme === "dark" ? "#fff" : "#222";
-  const inactiveColor = resolvedTheme === "dark" ? "#888" : "#aaa";
+  const activeColor = resolvedTheme === "dark" ? "#fff" : "#222";
+  const inactiveColor = resolvedTheme === "dark" ? "#a2a2a2ff" : "#373737ff";
   const textShadow = resolvedTheme === "dark"
     ? "0 2px 8px rgba(0,0,0,0.32)"
     : "0 2px 8px rgba(0,0,0,0.12)";
@@ -118,7 +114,7 @@ export default function TennisBall({
         style={{
           position: "fixed",
           left: 0,
-          bottom: "18vh",
+          bottom: "14vh",
           width: "100vw",
           display: "flex",
           justifyContent: "center",
@@ -169,7 +165,7 @@ export default function TennisBall({
           left: 0,
           bottom: 0,
           width: "100vw",
-          height: "20vh",
+          height: "15vh",
           zIndex: 10,
         }}
       >

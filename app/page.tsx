@@ -2,7 +2,7 @@
 
 import { ModeToggle } from "@/components/mode-toggle";
 import TennisBallNav from "@/components/ball";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import Seit1977 from "@/components/seit1977";
 import LogoSpinnerLoader from "@/components/logo_spinner";
 import { useTheme } from "next-themes";
@@ -18,6 +18,7 @@ export default function Home() {
   const [showSpinner, setShowSpinner] = useState(true);
   const [activeSection, setActiveSection] = useState(3);
   const [showBallNav, setShowBallNav] = useState(true);
+  const [inAnimationPhase, setInAnimationPhase] = useState(true);
 
   const sectionTitles = [
     "clubhaus.", "aktuelles.", "socials.",
@@ -31,7 +32,16 @@ export default function Home() {
   const ballBg = isDark ? "#18181b" : "#fff";
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowSpinner(false), 4500);
+    const timer = setTimeout(() => {
+      setShowSpinner(false);
+    }, 3500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setInAnimationPhase(false);
+    }, 3700);
     return () => clearTimeout(timer);
   }, []);
 
@@ -39,25 +49,25 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeSection]);
 
-  // Show/hide TennisBallNav on scroll
   useEffect(() => {
     let lastScrollY = window.scrollY;
-    let ticking = false;
 
     const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setShowBallNav(window.scrollY < lastScrollY - 10 || window.scrollY < 10);
-          lastScrollY = window.scrollY;
-          ticking = false;
-        });
-        ticking = true;
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < lastScrollY) {
+        setShowBallNav(true);
+      } else if (currentScrollY > lastScrollY) {
+        setShowBallNav(false);
       }
+
+      lastScrollY = currentScrollY;
     };
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
 
   if (!mounted) return null;
 
@@ -101,7 +111,7 @@ export default function Home() {
       {activeSection === 0 && <Clubhaus />}
       {activeSection === 1 && <Planmaesig />}
       {activeSection === 2 && <Socials />}
-      {activeSection === 3 && <Seit1977 />}
+      {activeSection === 3 && <Seit1977 animate={inAnimationPhase} />}
       {activeSection === 4 && <NextGen />}
       {activeSection === 5 && <PlatzUndDu />}
       {activeSection === 6 && <WFragen />}
@@ -130,7 +140,7 @@ export default function Home() {
               height: "100%",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
-              mask: "linear-gradient(to top, black, black 70%, transparent 100%)",
+              mask: "linear-gradient(to top, black, black 55%, transparent 100%)",
               background: isDark
                 ? "rgba(24,24,27,0.65)"
                 : "rgba(255,255,255,0.65)",
@@ -151,8 +161,8 @@ export default function Home() {
           width: "100vw",
           zIndex: 20,
           transition: "opacity 0.4s, transform 0.4s",
-          opacity: showBallNav ? 1 : 0,
-          transform: showBallNav ? "translateY(0)" : "translateY(40px)",
+          opacity: showBallNav && !inAnimationPhase ? 1 : 0,
+          transform: showBallNav  && !inAnimationPhase ? "translateY(0)" : "translateY(40px)",
           pointerEvents: showBallNav ? "auto" : "none",
         }}
       >
