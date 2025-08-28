@@ -30,7 +30,7 @@ export default function PlatzUndDu() {
                                 <td>€&nbsp;140,00</td>
                             </tr>
                             <tr>
-                                <td>Lebensgefährte/Ehepartner</td>
+                                <td>Lebensgefährt*in / Ehepartner*in</td>
                                 <td>€&nbsp;70,00</td>
                             </tr>
                             <tr>
@@ -38,7 +38,7 @@ export default function PlatzUndDu() {
                                 <td>€&nbsp;240,00</td>
                             </tr>
                             <tr>
-                                <td>Student:in</td>
+                                <td>Student*in</td>
                                 <td>€&nbsp;60,00</td>
                             </tr>
                             <tr>

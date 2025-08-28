@@ -56,14 +56,13 @@ export default function TennisBall({
     accumulatedRef.current += delta;
     lastAngleRef.current = angle;
 
-    // If user spun right (positive) a full turn
-    if (accumulatedRef.current >= Math.PI / 2) {
+    if (accumulatedRef.current >= Math.PI / 1.5) {
       setActiveSection((activeSection + 1) % sectionTitles.length);
       accumulatedRef.current = 0;
       setSnap(true);
     }
-    // If user spun left (negative) a full turn
-    if (accumulatedRef.current <= -Math.PI / 2) {
+
+    if (accumulatedRef.current <= -Math.PI / 1.5) {
       setActiveSection((activeSection - 1 + sectionTitles.length) % sectionTitles.length);
       accumulatedRef.current = 0;
       setSnap(true);
